@@ -280,7 +280,7 @@ def main():
             print(f'-------Пользователь {count1()} -------')
             for key, value in Char.items():
                 print(f"{key}:{value}")
-
     out(Characters)
+    
 if __name__ == '__main__':
     main()
