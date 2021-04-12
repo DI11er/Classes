@@ -30,10 +30,10 @@ class Base_Weapon:
 
 class Base_class:
     __LVL, __HEALTH = 1, 100
-    __slots__ = ['__lvl', '__health', '__gender', '__name', '__weapon', '__shild', '__protection']
+    __slots__ = ['__lvl', '__health', '__gender', '__name', '__weapon', '__shield', '__protection']
 
-    def __init__(self, gender, name, weapon, shild='None', protection=0):
-        self.__lvl, self.__health, self.__gender, self.__name, self.__weapon, self.__shild, self.__protection = Base_class.__LVL, Base_class.__HEALTH, gender, name, weapon, shild, protection
+    def __init__(self, gender, name, weapon, shield='None', protection=0):
+        self.__lvl, self.__health, self.__gender, self.__name, self.__weapon, self.__shield, self.__protection = Base_class.__LVL, Base_class.__HEALTH, gender, name, weapon, shield, protection
 
     @property
     def Lvl(self):
@@ -60,8 +60,8 @@ class Base_class:
         return self.__weapon
 
     @property
-    def Shild(self):
-        return self.__shild
+    def Shield(self):
+        return self.__shield
 
     @property
     def Protection(self):
@@ -94,17 +94,17 @@ class Base_class:
     """ def __add__(self, other):
         if not isinstance(other, Base_class):
             raise ArithmeticError('Правый оперранд должен быть Clock')
-        return Base_class(self.Gender,self.Name,self.__weapon, self.Shild, self.__protection + other.Protection) """
+        return Base_class(self.Gender,self.Name,self.__weapon, self.shield, self.__protection + other.Protection) """
 
     def __str__(self):
-        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shild}\nЗащита:{self.Protection}\n'
+        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shield}\nЗащита:{self.Protection}\n'
 
 
 class Archer(Base_class):
     __HEALTH = 150
 
-    def __init__(self, gender, name, weapon, shild=None, protection=0):
-        super().__init__(gender, name, weapon, shild=shild, protection=protection)
+    def __init__(self, gender, name, weapon, shield=None, protection=0):
+        super().__init__(gender, name, weapon, shield=shield, protection=protection)
         self.__health = Archer.__HEALTH
 
     @property
@@ -130,8 +130,8 @@ class Archer(Base_class):
 class Warrior(Base_class):
     __HEALTH = 250
 
-    def __init__(self, gender, name, weapon, shild=None, protection=0):
-        super().__init__(gender, name, weapon, shild=shild, protection=protection)
+    def __init__(self, gender, name, weapon, shield=None, protection=0):
+        super().__init__(gender, name, weapon, shield=shield, protection=protection)
         self.__health = Warrior.__HEALTH
 
     @property
@@ -157,8 +157,8 @@ class Warrior(Base_class):
 class Tank(Base_class):
     __HEALTH = 350
 
-    def __init__(self, gender, name, weapon, shild=None, protection=0):
-        super().__init__(gender, name, weapon, shild=shild, protection=protection)
+    def __init__(self, gender, name, weapon, shield=None, protection=0):
+        super().__init__(gender, name, weapon, shield=shield, protection=protection)
         self.__health = Tank.__HEALTH
 
     @property
@@ -260,7 +260,7 @@ def main():
             'weapon':     obj.Type_weapon,
             'range':      obj.Range,
             'damage':     obj.Damage,
-            'shild':      obj.Shild,
+            'shield':     obj.Shield,
             'protection': obj.Protection
         }
 
