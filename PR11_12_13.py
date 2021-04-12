@@ -215,12 +215,9 @@ def create_counter():
         return i 
     return iner
 
-import json
-
-Characters_json = []
-
-
 def main():
+    import json
+    Characters_json = []
     count = create_counter()
     for _ in range(int(input('Сколько игроков: '))):
     #---------------------------------------------------------------------------------------
@@ -267,7 +264,7 @@ def main():
             'protection': obj.Protection
         }
 
-        Characters_json.append(json.dumps(Character, ensure_ascii=False ))
+        Characters_json.append(json.dumps(Character, ensure_ascii=False))
     #---------------------------------------------------------------------------------------
 
 
