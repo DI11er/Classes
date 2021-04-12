@@ -36,16 +36,32 @@ class Base_class:
         self.__lvl, self.__health, self.__gender, self.__name, self.__weapon, self.__shild, self.__protection = Base_class.__LVL, Base_class.__HEALTH, gender, name, weapon, shild, protection
 
     @property
-    def Name(self):
-        return self.__name
+    def Lvl(self):
+        return self.__lvl
+
+    @Lvl.setter
+    def Lvl(self, value):
+        self.__lvl += Base_class.__typeTest(value)
 
     @property
-    def Shild(self):
-        return self.__shild
+    def Health(self):
+        return self.__health
 
     @property
     def Gender(self):
         return self.__gender
+
+    @property
+    def Name(self):
+        return self.__name
+
+    @property
+    def Weapon(self):
+        return self.__weapon
+
+    @property
+    def Shild(self):
+        return self.__shild
 
     @property
     def Protection(self):
@@ -63,14 +79,6 @@ class Base_class:
     def Damage(self):
         return self.__weapon._Base_Weapon__damage
 
-    @property
-    def Lvl(self):
-        return self.__lvl
-
-    @Lvl.setter
-    def Lvl(self, value):
-        self.__lvl += Base_class.__typeTest(value)
-
     @classmethod
     def event(cls, lvl=1, health=100):
         cls.__LVL, cls.__HEALTH = Base_class.__typeTest(lvl), Base_class.__typeTest(health)
@@ -82,11 +90,20 @@ class Base_class:
         else:
             raise TypeError('Должно быть int')
 
+    # Это вариант как можно использовать перегрузку
+    """ def __add__(self, other):
+        if not isinstance(other, Base_class):
+            raise ArithmeticError('Правый оперранд должен быть Clock')
+        return Base_class(self.Gender,self.Name,self.__weapon, self.Shild, self.__protection + other.Protection) """
+
+    def __str__(self):
+        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shild}\nЗащита:{self.Protection}\n'
+
 
 class Archer(Base_class):
     __HEALTH = 150
 
-    def __init__(self, gender, name, weapon, shild='None', protection=0):
+    def __init__(self, gender, name, weapon, shild=None, protection=0):
         super().__init__(gender, name, weapon, shild=shild, protection=protection)
         self.__health = Archer.__HEALTH
 
@@ -113,7 +130,7 @@ class Archer(Base_class):
 class Warrior(Base_class):
     __HEALTH = 250
 
-    def __init__(self, gender, name, weapon, shild='None', protection=0):
+    def __init__(self, gender, name, weapon, shild=None, protection=0):
         super().__init__(gender, name, weapon, shild=shild, protection=protection)
         self.__health = Warrior.__HEALTH
 
@@ -140,7 +157,7 @@ class Warrior(Base_class):
 class Tank(Base_class):
     __HEALTH = 350
 
-    def __init__(self, gender, name, weapon, shild='None', protection=0):
+    def __init__(self, gender, name, weapon, shild=None, protection=0):
         super().__init__(gender, name, weapon, shild=shild, protection=protection)
         self.__health = Tank.__HEALTH
 
@@ -151,11 +168,11 @@ class Tank(Base_class):
     @Health.setter
     def Health(self, value):
         self.__health += Tank.__typeTest(value)
-
+        
     @classmethod
     def event(cls, health=350, power=15):
         cls.__HEALTH, cls.__POWER = Tank.__typeTest(health), Tank.__typeTest(power)
-
+    
     @staticmethod
     def __typeTest(value):
         if isinstance(value, int):
@@ -183,13 +200,6 @@ class Shotgun_weapons(Base_Weapon):
         super().__init__(type_weapon, range_weapon, damage)
 
 
-# bow = Small_arms('Лук', 100, 40, 'стрелы')
-# crossbow = Small_arms('Арбалет', 200, 70, 'болты')
-# one_handed_sword = Cutting_weapons('Одноручный меч', 1, 20)
-# two_handed_sword = Cutting_weapons('Двуручный меч', 2, 40)
-# Flail = Shotgun_weapons('Кистень', 1, 30)
-# Shild = Security_features('Щит', 20)
-
 def printer(f):
     def wrapper(a):
         print('===============================')
@@ -211,7 +221,6 @@ Characters_json = []
 
 
 def main():
-    
     count = create_counter()
     for _ in range(int(input('Сколько игроков: '))):
     #---------------------------------------------------------------------------------------
@@ -258,7 +267,7 @@ def main():
             'protection': obj.Protection
         }
 
-        Characters_json.append(json.dumps(Character, ensure_ascii=False))
+        Characters_json.append(json.dumps(Character, ensure_ascii=False ))
     #---------------------------------------------------------------------------------------
 
 
@@ -282,5 +291,16 @@ def main():
                 print(f"{key}:{value}")
     out(Characters)
     
+# Это вариант как можно использовать перегрузку
+""" weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
+t1 = Archer('Мужчина', 'Alex', weapon_t1)
+weapon_t3 = Shotgun_weapons('Кистень', 1, 30)
+t3 = Tank('Мужчина', 'Bone_man', weapon_t3, 'Есть', 30)
+
+print(t1)
+print(t3)
+t4 = t1 + t3
+print(t4) """
+
 if __name__ == '__main__':
     main()
