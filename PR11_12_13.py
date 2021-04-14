@@ -32,7 +32,7 @@ class Base_class:
     __LVL, __HEALTH = 1, 100
     __slots__ = ['__lvl', '__health', '__gender', '__name', '__weapon', '__shield', '__protection']
 
-    def __init__(self, gender, name, weapon, shield='None', protection=0):
+    def __init__(self, gender, name, weapon, shield=None, protection=0):
         self.__lvl, self.__health, self.__gender, self.__name, self.__weapon, self.__shield, self.__protection = Base_class.__LVL, Base_class.__HEALTH, gender, name, weapon, shield, protection
 
     @property
@@ -291,13 +291,13 @@ def main():
 # Это вариант как можно использовать перегрузку
 """ weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
 t1 = Archer('Мужчина', 'Alex', weapon_t1)
-weapon_t3 = Shotgun_weapons('Кистень', 1, 30)
-t3 = Tank('Мужчина', 'Bone_man', weapon_t3, 'Есть', 30)
+weapon_t2 = Shotgun_weapons('Кистень', 1, 30)
+t2 = Tank('Мужчина', 'Bone_man', weapon_t2, 'Есть', 30)
 
 print(t1)
-print(t3)
-t4 = t1 + t3
-print(t4) """
+print(t2)
+t3 = t1 + t2
+print(t3) """
 
 if __name__ == '__main__':
     main()
