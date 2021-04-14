@@ -56,10 +56,6 @@ class Base_class:
         return self.__name
 
     @property
-    def Weapon(self):
-        return self.__weapon
-
-    @property
     def Shield(self):
         return self.__shield
 
@@ -97,7 +93,7 @@ class Base_class:
         return Base_class(self.Gender,self.Name,self.__weapon, self.shield, self.__protection + other.Protection) """
 
     def __str__(self):
-        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shield}\nЗащита:{self.Protection}\n'
+        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Type_weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shield}\nЗащита:{self.Protection}\n'
 
 
 class Archer(Base_class):
@@ -289,7 +285,7 @@ def main():
     out(Characters)
     
 # Это вариант как можно использовать перегрузку
-""" weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
+"""weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
 t1 = Archer('Мужчина', 'Alex', weapon_t1)
 weapon_t2 = Shotgun_weapons('Кистень', 1, 30)
 t2 = Tank('Мужчина', 'Bone_man', weapon_t2, 'Есть', 30)
