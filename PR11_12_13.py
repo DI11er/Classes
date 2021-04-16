@@ -1,8 +1,8 @@
 
 class Base_Weapon:
 
-    def __init__(self, type_weapon, range_weapon, damage):
-        self.__type, self.__range, self.__damage = type_weapon, range_weapon, damage
+    def __init__(self, type_weapon, range_weapon, damage_weapon):
+        self.__type, self.__range, self.__damage = type_weapon, range_weapon, damage_weapon
 
     @property
     def Damage(self):
@@ -179,21 +179,15 @@ class Tank(Base_class):
 
 class Small_arms(Base_Weapon):
 
-    def __init__(self, type_weapon, range_weapon, damage, type_of_ammunition):
-        super().__init__(type_weapon, range_weapon, damage)
+    def __init__(self, type_weapon, range_weapon, damage_weapon, type_of_ammunition):
+        super().__init__(type_weapon, range_weapon, damage_weapon)
         self.__type_of_ammunition = type_of_ammunition
 
 
-class Cutting_weapons(Base_Weapon):
+class Silent_weapon(Base_Weapon):
 
-    def __init__(self, type_weapon, range_weapon, damage):
-        super().__init__(type_weapon, range_weapon, damage)
-
-
-class Shotgun_weapons(Base_Weapon):
-
-    def __init__(self, type_weapon, range_weapon, damage):
-        super().__init__(type_weapon, range_weapon, damage)
+    def __init__(self, type_weapon, range_weapon, damage_weapon):
+        super().__init__(type_weapon, range_weapon, damage_weapon)
 
 
 def printer(f):
@@ -212,7 +206,7 @@ def create_counter():
     return iner
 
 def main():
-    import json
+    from json import loads, dumps
     Characters_json = []
     count = create_counter()
     for _ in range(int(input('Сколько игроков: '))):
@@ -234,17 +228,17 @@ def main():
             print('', 'Введите тип оружия', '1: Одноручный меч', '2: Двуручный меч', sep='\n')
             j = int(input('Введите номер понравившегося оружия: ')) 
             if j == 1:
-                weapon = Cutting_weapons('Одноручный меч', 1, 20)
+                weapon = Silent_weapon('Одноручный меч', 1, 20)
             elif j == 2:
-                weapon = Cutting_weapons('Двуручный меч', 2, 40)
+                weapon = Silent_weapon('Двуручный меч', 2, 40)
             obj = Warrior(gender, name, weapon)
         elif i == 3:
             print('', 'Введите тип оружия', '1: Щит + Одноручный меч', '2: Щит + Кистень(Булава на цепочке)', sep='\n')
             j = int(input('Введите номер понравившегося оружия: '))
             if j == 1:
-                weapon = Cutting_weapons('Одноручный меч', 1, 20)
+                weapon = Silent_weapon('Одноручный меч', 1, 20)
             elif j == 2:
-                weapon = Shotgun_weapons('Кистень', 1, 30)
+                weapon = Silent_weapon('Кистень', 1, 30)
             obj = Tank(gender, name, weapon, 'Есть', 20)
 
         Character = {
@@ -260,7 +254,7 @@ def main():
             'protection': obj.Protection
         }
 
-        Characters_json.append(json.dumps(Character, ensure_ascii=False))
+        Characters_json.append(dumps(Character, ensure_ascii=False))
     #---------------------------------------------------------------------------------------
 
 
@@ -270,14 +264,13 @@ def main():
             write_f_txt.write(w + '\n')
 
     Characters = []
-    with open('Players.txt', 'r', encoding='utf-8') as read_f_txt:
-        for i in read_f_txt:
-            Characters.append(json.loads(i))
-
-    count1 = create_counter()
+    with open('Players.txt', encoding='utf-8') as read_f_txt:
+        for r in read_f_txt:
+            Characters.append(loads(r))
 
     @printer
     def out(f):
+        count1 = create_counter()
         for Char in f:
             print(f'-------Пользователь {count1()} -------')
             for key, value in Char.items():
@@ -287,7 +280,7 @@ def main():
 # Это вариант как можно использовать перегрузку
 """weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
 t1 = Archer('Мужчина', 'Alex', weapon_t1)
-weapon_t2 = Shotgun_weapons('Кистень', 1, 30)
+weapon_t2 = Silent_weapon('Кистень', 1, 30)
 t2 = Tank('Мужчина', 'Bone_man', weapon_t2, 'Есть', 30)
 
 print(t1)
