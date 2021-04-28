@@ -2,30 +2,8 @@
 class Base_Weapon:
 
     def __init__(self, type_weapon, range_weapon, damage_weapon):
-        self.__type, self.__range, self.__damage = type_weapon, range_weapon, damage_weapon
+        self.type, self.range, self.damage = type_weapon, range_weapon, damage_weapon
 
-    @property
-    def Damage(self):
-        return self.__damage
-
-    @Damage.setter
-    def Damage(self, value):
-        self.__damage += Base_Weapon.__typeTest(value)
-
-    @property
-    def Range(self):
-        return self.__range
-
-    @Range.setter
-    def Range(self, value):
-        self.__range += Base_Weapon.__typeTest(value)
-
-    @staticmethod
-    def __typeTest(value):
-        if isinstance(value, int):
-            return value
-        else:
-            raise TypeError('Должно быть int')
 
 
 class Base_class:
@@ -64,16 +42,28 @@ class Base_class:
         return self.__protection
 
     @property
-    def Type_weapon(self):
-        return self.__weapon._Base_Weapon__type
+    def Name_weapon(self):
+        return self.__weapon.type
+
+    @Name_weapon.setter
+    def Name_weapon(self, value):
+        self.__weapon.type = value
 
     @property
     def Range(self):
-        return self.__weapon._Base_Weapon__range
+        return self.__weapon.range
+
+    @Range.setter
+    def Range(self, value):
+        self.__weapon.range += Base_class.__typeTest(value)
 
     @property
     def Damage(self):
-        return self.__weapon._Base_Weapon__damage
+        return self.__weapon.damage
+
+    @Damage.setter
+    def Damage(self, value):
+        self.__weapon.damage += Base_class.__typeTest(value)
 
     @classmethod
     def event(cls, lvl=1, health=100):
@@ -86,14 +76,9 @@ class Base_class:
         else:
             raise TypeError('Должно быть int')
 
-    # Это вариант как можно использовать перегрузку
-    """ def __add__(self, other):
-        if not isinstance(other, Base_class):
-            raise ArithmeticError('Правый оперранд должен быть Clock')
-        return Base_class(self.Gender,self.Name,self.__weapon, self.shield, self.__protection + other.Protection) """
 
     def __str__(self):
-        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Type_weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shield}\nЗащита:{self.Protection}\n'
+        return f'Уровень:{self.Lvl}\nКласс:{self.__class__.__name__}\nИмя:{self.Name}\nПол:{self.Gender}\nЗдоровье:{self.Health}\nОружие:{self.Name_weapon}\nРадиус атаки:{self.Range}\nУрон:{self.Damage}\nЩит:{self.Shield}\nЗащита:{self.Protection}\n'
 
 
 class Archer(Base_class):
@@ -177,19 +162,6 @@ class Tank(Base_class):
             raise TypeError('Должно быть int')
 
 
-class Small_arms(Base_Weapon):
-
-    def __init__(self, type_weapon, range_weapon, damage_weapon, type_of_ammunition):
-        super().__init__(type_weapon, range_weapon, damage_weapon)
-        self.__type_of_ammunition = type_of_ammunition
-
-
-class Silent_weapon(Base_Weapon):
-
-    def __init__(self, type_weapon, range_weapon, damage_weapon):
-        super().__init__(type_weapon, range_weapon, damage_weapon)
-
-
 def printer(f):
     def wrapper(a):
         print('===============================')
@@ -220,25 +192,25 @@ def main():
             print('', 'Введите тип оружия', '1: Лук', '2: Арбалет', sep='\n')
             j = int(input('Введите номер понравившегося оружия: ')) 
             if j == 1:
-                weapon = Small_arms('Лук', 100, 40, 'стрелы')
+                weapon = Base_Weapon('Лук', 100, 40)
             elif j == 2:
-                weapon = Small_arms('Арбалет', 200, 70, 'болты')
+                weapon = Base_Weapon('Арбалет', 200, 70)
             obj = Archer(gender, name, weapon)
         elif i == 2:
             print('', 'Введите тип оружия', '1: Одноручный меч', '2: Двуручный меч', sep='\n')
             j = int(input('Введите номер понравившегося оружия: ')) 
             if j == 1:
-                weapon = Silent_weapon('Одноручный меч', 1, 20)
+                weapon = Base_Weapon('Одноручный меч', 1, 20)
             elif j == 2:
-                weapon = Silent_weapon('Двуручный меч', 2, 40)
+                weapon = Base_Weapon('Двуручный меч', 2, 40)
             obj = Warrior(gender, name, weapon)
         elif i == 3:
             print('', 'Введите тип оружия', '1: Щит + Одноручный меч', '2: Щит + Кистень(Булава на цепочке)', sep='\n')
             j = int(input('Введите номер понравившегося оружия: '))
             if j == 1:
-                weapon = Silent_weapon('Одноручный меч', 1, 20)
+                weapon = Base_Weapon('Одноручный меч', 1, 20)
             elif j == 2:
-                weapon = Silent_weapon('Кистень', 1, 30)
+                weapon = Base_Weapon('Кистень', 1, 30)
             obj = Tank(gender, name, weapon, 'Есть', 20)
 
         Character = {
@@ -247,7 +219,7 @@ def main():
             'name':       obj.Name,
             'gender':     obj.Gender,
             'health':     obj.Health,
-            'weapon':     obj.Type_weapon,
+            'weapon':     obj.Name_weapon,
             'range':      obj.Range,
             'damage':     obj.Damage,
             'shield':     obj.Shield,
@@ -263,10 +235,10 @@ def main():
         for w in Characters_json:
             write_f_txt.write(w + '\n')
 
-    Characters = []
+
     with open('Players.txt', encoding='utf-8') as read_f_txt:
-        for r in read_f_txt:
-            Characters.append(loads(r))
+        Character = [loads(r) for r in read_f_txt]
+
 
     @printer
     def out(f):
@@ -275,18 +247,10 @@ def main():
             print(f'-------Пользователь {count1()} -------')
             for key, value in Char.items():
                 print(f"{key}:{value}")
-    out(Characters)
+    out(Character)
     
-# Это вариант как можно использовать перегрузку
-"""weapon_t1 = Small_arms('Лук', 20, 50, 'стрелы')
-t1 = Archer('Мужчина', 'Alex', weapon_t1)
-weapon_t2 = Silent_weapon('Кистень', 1, 30)
-t2 = Tank('Мужчина', 'Bone_man', weapon_t2, 'Есть', 30)
 
-print(t1)
-print(t2)
-t3 = t1 + t2
-print(t3) """
+
 
 if __name__ == '__main__':
     main()
